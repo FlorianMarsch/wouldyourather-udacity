@@ -35,7 +35,7 @@ class Leaderboard extends Component {
 
     let leaderboard = Object.keys(users).map(key => {
       let user = users[key];
-      return { name: user.name, answers: Object.keys(user.answers).length, questions: user.questions.length }
+      return { picture: user.avatarURL, name: user.name, answers: Object.keys(user.answers).length, questions: user.questions.length }
     }).sort((a, b) => {
       return a.answers === b.answers ? a.questions < b.questions : a.answers < b.answers;
     });
@@ -45,7 +45,11 @@ class Leaderboard extends Component {
         {leaderboard.length > 0 ? (
           leaderboard.map(user => {
             return (<li key={user.name}>
-              {user.name} - Answers :{user.answers} - Questions :{user.questions}</li>
+              <img src={user.picture} style={{ width: '50px' }} alt={user.name} />
+              <p>
+                {user.name} - Answers :{user.answers} - Questions :{user.questions}
+              </p>
+            </li>
             )
           })
         ) : (

@@ -10,7 +10,7 @@ class Header extends Component {
     return (
       <header>
         {currentUser && (
-          <p >Hi {currentUser.name} - <button onClick={this.props.logout}>logout</button></p>
+          <p >Hi {currentUser.name} -<img style={{ width: '50px' }} src={currentUser.avatarURL} alt={currentUser.name} /> <button onClick={this.props.logout}>logout</button></p>
         )}
         <Link to="/">
           <h1>Would You Rather????</h1>
