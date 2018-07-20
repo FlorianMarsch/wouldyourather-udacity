@@ -36,6 +36,8 @@ class Questions extends Component {
     }
     let openQuestions = questions.filter(question => {
       return !(question.optionOne.votes.includes(currentUser.id) || question.optionTwo.votes.includes(currentUser.id))
+    }).sort((a, b) => {
+      return a.timestamp < b.timestamp;
     });
 
     return (

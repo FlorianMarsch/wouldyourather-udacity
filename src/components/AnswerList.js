@@ -39,6 +39,8 @@ class Answers extends Component {
         {Object.keys(users).length > 0 && questions.length > 0 ? (
           questions.filter(question => {
             return (question.optionOne.votes.includes(currentUser.id) || question.optionTwo.votes.includes(currentUser.id))
+          }).sort((a, b) => {
+            return a.timestamp < b.timestamp;
           }).map(question => (<li key={question.id}>
             <Question
               user={currentUser}
