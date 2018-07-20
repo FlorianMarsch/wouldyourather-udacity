@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { saveAnswer } from '../actions';
 import Spinner from './Spinner';
+import { Link } from 'react-router-dom'
 
 class Question extends Component {
 
@@ -39,10 +40,10 @@ class Question extends Component {
     }
 
     if (question.optionOne.votes.includes(user.id)) {
-      return (<div >Yo would {question.optionOne.text}</div>);
+      return (<div >Yo would {question.optionOne.text} <Link to={"/questions/" + question.id}>(see details)</Link></div>);
     }
     if (question.optionTwo.votes.includes(user.id)) {
-      return (<div >You would {question.optionTwo.text}</div>);
+      return (<div >You would {question.optionTwo.text} <Link to={"/questions/" + question.id}>(see details)</Link></div>);
     }
 
 
@@ -56,7 +57,7 @@ class Question extends Component {
         </div>
         <div>
           <p>
-            {author.name} asked this
+            {author.name} asked this <Link to={"/questions/" + question.id}>(see details)</Link>
           </p>
         </div>
       </div>

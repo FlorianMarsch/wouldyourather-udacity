@@ -4,6 +4,7 @@ import QuestionList from './QuestionList';
 import AnswerList from './AnswerList';
 import Leaderboard from './Leaderboard';
 import AddQuestion from './AddQuestion';
+import Details from './Details';
 
 
 
@@ -46,6 +47,14 @@ class Routes extends Component {
             <div>
               <h2>Add Question</h2>
               <AddQuestion />
+            </div>
+          )}
+        /><Route
+          path="/questions/:question_id"
+          render={props => (
+            <div>
+              <h2>Details</h2>
+              <Details id={props.match.params.question_id} />
             </div>
           )}
         />
