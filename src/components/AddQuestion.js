@@ -2,22 +2,28 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loadQuestions, loadUsers, saveQuestion } from '../actions';
 import ChooseUser from './ChooseUser';
+import { Redirect } from 'react-router'
 
 class AddQuestion extends Component {
   state = {
     optionOne: '',
     optionTwo: '',
     author: null,
-    currentUser: null
+    currentUser: null,
+    redirect: null
   };
 
 
 
   render() {
     const { currentUser } = this.props;
+    const { redirect } = this.state;
 
     if (!currentUser) {
       return <ChooseUser />;
+    }
+    if (redirect) {
+      return <Redirect to='/' />;
     }
 
     return (
@@ -35,7 +41,8 @@ class AddQuestion extends Component {
 
             let question = { optionOneText: this.state.optionOne, optionTwoText: this.state.optionTwo, author: currentUser.id };
             this.props.saveQuestion(question);
-            this.setState({ ...this.state, optionOne: '', optionTwo: '' })
+            this.setState({ ...this.state, optionOne: '', optionTwo: '', redirect: true });
+
           }}>save</button>
       </div>
     );
