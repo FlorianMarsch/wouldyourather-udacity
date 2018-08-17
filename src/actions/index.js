@@ -3,65 +3,62 @@ import {
   _getUsers,
   _saveQuestionAnswer,
   _saveQuestion
-} from './_data.js';
+} from '../api/_data.js';
 
-export const GET_USER = 'GETUSER';
-export const GET_QUESTIONS = 'GETQUESTIONS';
-export const GET_USERS = 'GETUSERS';
+import { createAction } from 'redux-actions';
 
-export const SET_USER = 'SETUSER';
+export const loginEvent = createAction('LOGIN');
+export const initQuestionsEvent = createAction('INIT_QUESTIONS');
+export const initUsersEvent = createAction('INIT_USERS');
 
-
-
-export const setUser = (authedUser) => {
-  return {
-    type: SET_USER,
-    authedUser
+export const login = (user) => {
+  return dispatch => {
+    return dispatch(loginEvent(user));
   };
 };
 
-export const saveAnswer = (authedUser, qid, answer) => {
+export const logout = (user) => {
   return dispatch => {
-    return _saveQuestionAnswer({ authedUser: authedUser.id, qid: qid, answer: answer });
+    return dispatch(loginEvent(null));
+  };
+};
+
+export const initQuestions = () => {
+  return dispatch => {
+    return _getQuestions().then(questions => {
+      dispatch(initQuestionsEvent(questions));
+    });
+  };
+};
+
+export const initUsers = () => {
+  return dispatch => {
+    return _getUsers().then(users => dispatch(initUsersEvent(users)));
+  };
+};
+
+
+
+export const saveAnswer = (user, qid, answer) => {
+  return dispatch => {
+    _saveQuestionAnswer({ authedUser: user.id, qid: qid, answer: answer }).then(response => {
+      dispatch(initQuestions(response.questions));
+      dispatch(initUsers(response.users));
+    });
   };
 };
 
 
 export const saveQuestion = (question) => {
   return dispatch => {
-    return _saveQuestion(question);
-  };
-};
-
-// load questions
-const getQuestions = questions => {
-  return {
-    type: GET_QUESTIONS,
-    questions
-  };
-};
-
-export const loadQuestions = () => {
-  return dispatch => {
-    return _getQuestions().then(response => {
-      // convert questions to array
-      const qIndices = Object.keys(response);
-      const questions = qIndices.map(index => response[index]);
-      dispatch(getQuestions(questions));
+    _saveQuestion(question).then(response => {
+      dispatch(initQuestions(response.questions));
+      dispatch(initUsers(response.users));
     });
+
   };
 };
 
-// load users
-const getUsers = users => {
-  return {
-    type: GET_USERS,
-    users
-  };
-};
 
-export const loadUsers = () => {
-  return dispatch => {
-    return _getUsers().then(response => dispatch(getUsers(response)));
-  };
-};
+
+

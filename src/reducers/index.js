@@ -1,35 +1,18 @@
 import { combineReducers } from 'redux';
-import { GET_USER, GET_QUESTIONS, GET_USERS, SET_USER } from '../actions';
+import { loginEvent, initQuestionsEvent, initUsersEvent } from '../actions';
 
-function currentUser(state = null, action) {
-  switch (action.type) {
-    case GET_USER:
-      return action.currentUser;
+import { routerReducer } from 'react-router-redux'
+import { handleActions } from 'redux-actions';
 
-    case SET_USER:
-      return action.authedUser;
+let reducer = handleActions({
+  [loginEvent]: (state, action) => {
+    return { ...state, user: action.payload }
+  }, [initQuestionsEvent]: (state, action) => {
+    return { ...state, questions: action.payload }
+  }, [initUsersEvent]: (state, action) => {
+    return { ...state, users: action.payload }
+  },
+}, { user: null, users: [], questions: [] });
 
-    default:
-      return state;
-  }
-}
-function questions(state = [], action) {
-  switch (action.type) {
-    case GET_QUESTIONS:
-      return action.questions;
 
-    default:
-      return state;
-  }
-}
-
-function users(state = {}, action) {
-  switch (action.type) {
-    case GET_USERS:
-      return action.users;
-
-    default:
-      return state;
-  }
-}
-export default combineReducers({ currentUser, questions, users });
+export default combineReducers({ app: reducer, routing: routerReducer });
